@@ -53,15 +53,18 @@ public class Originator extends Actor
 				if ( curEv instanceof CallCtlTermConnTalkingEv ) {
 					TerminalConnection tc = ((CallCtlTermConnTalkingEv)curEv).getTerminalConnection ();
 					Connection conn = tc.getConnection ();
+					bufPrintln ( "EVENT: TALK: CallCtlTermConnTalkingEv(1) " + conn );
 					if ( conn.getAddress ().getName ().equals ( destAddress ) ) {
-						delay ( "disconnecting" );
-						bufPrintln ( "Disconnecting Connection " + conn );
-						conn.disconnect ();
+						//delay ( "disconnecting" );
+						bufPrintln ( "EVENT: TALK: CallCtlTermConnTalkingEv(2) in destAddress " + conn );
+						//conn.disconnect ();
 					}
 				}
 				else if ( curEv instanceof CallCtlConnDisconnectedEv ) {
 					Connection conn = ((CallCtlConnDisconnectedEv)curEv).getConnection ();
+					bufPrintln ( "EVENT: DISC: CallCtlTermConnTalkingEv(1) " + conn );
 					if ( conn.getAddress ().equals ( srcAddress ) ) {
+						bufPrintln ( "EVENT: DISC: CallCtlTermConnTalkingEv(2) srcAddress " + conn );
 						stopSignal.canStop ();
 						setCallProgressState ( true );
 					}
@@ -86,6 +89,11 @@ public class Originator extends Actor
 			call.connect ( srcAddress.getTerminals ()[0], srcAddress, destAddress );
 			setCallProgressState ( false );
 			println ( "Done making call" );
+	}
+	protected void makecallWait ()
+		{
+
+		println ( "makecallWait" + System.currentTimeMillis());
 	}
 
 
@@ -158,7 +166,8 @@ public class Originator extends Actor
 			//make call after waking up, recheck the flags before making the call
 			if ( ready && callInIdle ) {
 				try {
-					makecall ();
+					//makecall ();
+					makecallWait ();
 				}catch ( Exception e ) {
 					println (" Caught Exception in MakeCall " + e + " Thread =" + Thread.currentThread ().getName ());
 				}

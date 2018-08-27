@@ -25,6 +25,7 @@ import javax.telephony.events.*;
 import javax.telephony.callcontrol.*;
 import javax.telephony.callcontrol.events.*;
 
+
 public class Receiver extends Actor
 {
 	Address		address;
@@ -40,14 +41,20 @@ public class Receiver extends Actor
 	protected final void metaEvent ( CallEv [] eventList ) {
 		for ( int i = 0; i < eventList.length; i++ ) {
 			TerminalConnection tc = null;
+			Address callInfo = null;
 			try {
 				CallEv curEv = eventList[i];
 
 				if ( curEv instanceof CallCtlTermConnRingingEv ) {
-					tc = ((CallCtlTermConnRingingEv)curEv).getTerminalConnection ();
-					delay ( "answering" );
-					bufPrintln ( "Answering TerminalConnection " + tc );
-					tc.answer ();
+					tc = ((CallCtlTermConnRingingEv)curEv).getTerminalConnection();
+					callInfo = ((CallCtlTermConnRingingEv)curEv).getCallingAddress();
+					//delay ( "answering" + System.currentTimeMillis() );
+					bufPrintln (  "Answering TerminalConnection " + tc );
+					bufPrintln (  "getCapabilities: " + tc.getCapabilities() );
+					bufPrintln (  "getConnection " + tc.getConnection().getAddress());
+					bufPrintln (  "getState " + tc.getState() );
+					bufPrintln (  "Calling Address  " + callInfo.getName());
+					//tc.answer ();
 					stopSignal.canStop ();
 				}
 			}
