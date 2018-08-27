@@ -54,6 +54,8 @@ public class Receiver extends Actor
 					bufPrintln (  "getConnection " + tc.getConnection().getAddress());
 					bufPrintln (  "getState " + tc.getState() );
 					bufPrintln (  "Calling Address  " + callInfo.getName());
+					MakeSound ringing = new MakeSound();
+				    ringing.playSound("C:\\Users\\lukaszj\\IdeaProjects\\CiscoMakecall\\java\\sounds\\belgphone.wav");
 					//tc.answer ();
 					stopSignal.canStop ();
 				}
